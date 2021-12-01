@@ -14,7 +14,6 @@
   $user_array['data'] = [];
   // echo $results;
   if ($results) {
-    //show the user
     foreach ($results as $result) {
       array_push($user_array['data'], $result);
     }
