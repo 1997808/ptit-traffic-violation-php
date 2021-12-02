@@ -1,7 +1,7 @@
 <?php
   header('Access-Control-Allow-Origin: http://localhost:3000');
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Headers: true', 'Origin, X-Requested-With, Content-Type, Accept');
+  header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
   header('Access-Control-Allow-Credentials: true');
   
   include_once('../../config/db.php');
@@ -17,9 +17,11 @@
 
   $document->violationId = isset($data['violationId']) ? $data['violationId'] : null;
   $document->licensePlate = isset($data['licensePlate']) ? $data['licensePlate'] : null;
-  $document->status = isset($data['status']) ? $data['status'] : null;
+  // $document->status = isset($data['status']) ? $data['status'] : null;
+  $document->status = "unpaid";
   $document->createAt = $datetime;
   $document->updateAt = $datetime;
+  var_dump($document->licensePlate, $document->violationId);
 
   $read = $document->createDocument();
   if ($read) {
