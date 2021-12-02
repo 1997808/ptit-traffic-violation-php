@@ -56,11 +56,7 @@ class Violation {
   public function deleteViolation() {
     $query = "DELETE FROM violation WHERE id=?";
     $stmt = $this->conn->prepare($query);
-    if($stmt->execute([$this->id])) {
-      return true;
-    }
-    printf("Error %s. \n", $stmt->error);
-    return false;
+    $stmt->execute([$this->id]);
   }
 }
 ?>
