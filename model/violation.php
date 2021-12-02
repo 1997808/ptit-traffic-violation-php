@@ -30,6 +30,16 @@ class Violation {
     return $stmt;
   }
 
+  //get by name vehicle
+  public function checkExistViolation() {
+    $query = "SELECT COUNT(id) FROM violation WHERE (name=? AND vehicle=?)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(1, $this->name);
+    $stmt->bindParam(2, $this->vehicle);
+    $stmt->execute();
+    return $stmt;
+  }
+
   //create data
   public function createViolation() {
     $query = "INSERT INTO violation (name, amount, vehicle) VALUES (?, ?, ?)";
@@ -40,11 +50,7 @@ class Violation {
   public function updateViolation() {
     $query = "UPDATE violation SET name=?, amount=?, vehicle=? WHERE id=?";
     $stmt = $this->conn->prepare($query);
-    if($stmt->execute([$this->name, $this->amount, $this->vehicle, $this->id])) {
-      return true;
-    }
-    printf("Error %s. \n", $stmt->error);
-    return false;
+    $stmt->execute([$this->name, $this->amount, $this->vehicle, $this->id]);
   }
 
   public function deleteViolation() {
