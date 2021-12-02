@@ -21,7 +21,6 @@
   $document->status = "unpaid";
   $document->createAt = $datetime;
   $document->updateAt = $datetime;
-  var_dump($document->licensePlate, $document->violationId);
 
   $read = $document->createDocument();
   if ($read) {

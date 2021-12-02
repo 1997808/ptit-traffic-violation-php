@@ -80,6 +80,7 @@ class Document {
     $query = "INSERT INTO document (violationId, licensePlate, status, createAt, updateAt) VALUES (?, ?, ?, ?, ?)";
     $stmt = $this->conn->prepare($query);
     $stmt->execute([$this->violationId, $this->licensePlate, $this->status, $this->createAt, $this->updateAt]);
+    return $stmt;
   }
 
   public function updateDocument() {
