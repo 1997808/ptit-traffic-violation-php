@@ -21,6 +21,40 @@ class Violation {
     return $stmt;
   }
 
+  public function getSearchViolation() {
+    $basequery = "SELECT * FROM violation";
+    $where = " WHERE ";
+    $name = "name LIKE :name";
+    $and = " AND ";
+    $vehicle = "vehicle LIKE :vehicle";
+    if ($this->name || $this->vehicle) {
+      $basequery = $basequery . $where;
+      $count = 0;
+      if ($this->name) {
+        $basequery = $basequery . $name;
+        $count++;
+      } 
+      if ($this->vehicle && $count != 0) {
+        $basequery = $basequery . $and;
+        $basequery = $basequery . $vehicle;
+        $stmt = $this->conn->prepare($basequery);
+        $stmt->bindValue(':name', '%' . $this->name . '%');
+        $stmt->bindValue(':vehicle', '%' . $this->vehicle . '%');
+      } else if ($this->vehicle && $count == 0) {
+        $basequery = $basequery . $vehicle;
+        $stmt = $this->conn->prepare($basequery);
+        $stmt->bindValue(':vehicle', '%' . $this->vehicle . '%');
+      } else if ($this->name && $count == 1) {
+        $stmt = $this->conn->prepare($basequery);
+        $stmt->bindValue(':name', '%' . $this->name . '%');
+      }
+    } else {
+      $stmt = $this->conn->prepare($basequery);
+    }
+    $stmt->execute();
+    return $stmt;
+  }
+
   //get one data
   public function getOneViolation() {
     $query = "SELECT * FROM violation WHERE id=?";
