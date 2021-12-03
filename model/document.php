@@ -83,6 +83,12 @@ class Document {
     return $stmt;
   }
 
+  public function payDocument() {
+    $query = "UPDATE document SET status=?, updateAt=? WHERE id=?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([$this->status, $this->updateAt, $this->id]);
+  }
+
   public function updateDocument() {
     $query = "UPDATE document SET violationId=?, licensePlate=?, status=?, updateAt=? WHERE id=?";
     $stmt = $this->conn->prepare($query);
@@ -97,6 +103,27 @@ class Document {
     }
     printf("Error %s. \n", $stmt->error);
     return false;
+  }
+
+  public function countDocumentByViolation() {
+    $query = "SELECT violation.name, COUNT(vehicle) as quantity, COUNT(CASE WHEN vehicle = 'oto' THEN 1 END) as oto, COUNT(CASE WHEN vehicle = 'xemay' THEN 1 END) as xemay, COUNT(CASE WHEN vehicle = 'xedien' THEN 1 END) as xedien FROM document INNER JOIN violation ON document.violationId = violation.id GROUP BY violation.name ORDER BY 2 DESC LIMIT 5";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
+  }
+
+  public function countDocumentByVehicle() {
+    $query = "SELECT COUNT(CASE WHEN vehicle = 'oto' THEN 1 END) as oto, COUNT(CASE WHEN vehicle = 'xemay' THEN 1 END) as xemay, COUNT(CASE WHEN vehicle = 'xedien' THEN 1 END) as xedien FROM document INNER JOIN violation ON document.violationId = violation.id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
+  }
+
+  public function countDocumentByStatus() {
+    $query = "SELECT COUNT(*) as quantity, COUNT(CASE WHEN status = 'paid' THEN 1 END) as paid, COUNT(CASE WHEN status = 'unpaid' THEN 1 END) as unpaid FROM document INNER JOIN violation ON document.violationId = violation.id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
   }
 }
 ?>
