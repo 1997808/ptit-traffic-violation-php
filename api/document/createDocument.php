@@ -15,17 +15,20 @@
   $data = json_decode($json, true);
   $datetime = date('Y-m-d H:i:s');
 
-  $document->violationId = isset($data['violationId']) ? $data['violationId'] : null;
-  $document->licensePlate = isset($data['licensePlate']) ? $data['licensePlate'] : null;
-  // $document->status = isset($data['status']) ? $data['status'] : null;
-  $document->status = "unpaid";
-  $document->createAt = $datetime;
-  $document->updateAt = $datetime;
+  session_start();
+  if(isset($_SESSION["admin"])) {
+    $document->violationId = isset($data['violationId']) ? $data['violationId'] : null;
+    $document->licensePlate = isset($data['licensePlate']) ? $data['licensePlate'] : null;
+    // $document->status = isset($data['status']) ? $data['status'] : null;
+    $document->status = "unpaid";
+    $document->createAt = $datetime;
+    $document->updateAt = $datetime;
 
-  $read = $document->createDocument();
-  if ($read) {
-    echo true;
-  } else {
-    echo false;
+    $read = $document->createDocument();
+    if ($read) {
+      echo true;
+    } else {
+      echo false;
+    }
   }
 ?>

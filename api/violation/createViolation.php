@@ -15,15 +15,18 @@
   $json = file_get_contents('php://input');
   $data = json_decode($json, true);
 
-  $violation->name = isset($data['name']) ? $data['name'] : null;
-  $violation->amount = isset($data['amount']) ? $data['amount'] : null;
-  $violation->vehicle = isset($data['vehicle']) ? $data['vehicle'] : null;
-  
-  $check = $violation->checkExistViolation();
-  if($check->fetch(PDO::FETCH_COLUMN) == '0') {
-    $read = $violation->createViolation();
-    echo true;
-  } else {
-    echo false;
+  session_start();
+  if(isset($_SESSION["admin"])) {
+    $violation->name = isset($data['name']) ? $data['name'] : null;
+    $violation->amount = isset($data['amount']) ? $data['amount'] : null;
+    $violation->vehicle = isset($data['vehicle']) ? $data['vehicle'] : null;
+    
+    $check = $violation->checkExistViolation();
+    if($check->fetch(PDO::FETCH_COLUMN) == '0') {
+      $read = $violation->createViolation();
+      echo true;
+    } else {
+      echo false;
+    }
   }
 ?>

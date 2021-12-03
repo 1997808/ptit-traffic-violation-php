@@ -16,7 +16,6 @@
 
   $document->licensePlate = isset($data['licensePlate']) ? $data['licensePlate'] : null;
   $document->vehicle = isset($data['vehicle']) ? $data['vehicle'] : null;
-
   $read = $document->getSearchDocument();
   $results = $read->fetchAll(PDO::FETCH_ASSOC);
   $document_array = [];

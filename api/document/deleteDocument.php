@@ -15,8 +15,15 @@
   $json = file_get_contents('php://input');
   $data = json_decode($json, true);
 
-  // $document->id = isset($data['id']) ? $data['id'] : null;
-  $document->id = isset($_GET['id']) ? $_GET['id'] : null;
-  $read = $document->deleteDocument();
-  var_dump($read);
+  session_start();
+  if(isset($_SESSION["admin"])) {
+    // $document->id = isset($data['id']) ? $data['id'] : null;
+    $document->id = isset($_GET['id']) ? $_GET['id'] : null;
+    $read = $document->deleteDocument();
+    if ($read) {
+      echo true;
+    } else {
+      echo false;
+    }
+  }
 ?>

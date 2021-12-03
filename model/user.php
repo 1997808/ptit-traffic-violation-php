@@ -31,6 +31,24 @@ class User {
     return $stmt;
   }
 
+  public function login() {
+    $query = "SELECT * FROM user WHERE email=? AND password=?";
+    $stmt = $this->conn->prepare($query);
+    // $stmt->bindParam(1, $this->id );
+    $stmt->execute([$this->email, $this->password]);
+    // $stmt->execute();
+    return $stmt;
+  }
+
+  // public function logout() {
+  //   $query = "SELECT * FROM user WHERE id=?";
+  //   $stmt = $this->conn->prepare($query);
+  //   $stmt->bindParam(1, $this->id );
+  //   // $stmt->execute([$this->id]);
+  //   $stmt->execute();
+  //   return $stmt;
+  // }
+
   //create data
   public function createUser() {
     $query = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
